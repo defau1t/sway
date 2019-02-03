@@ -690,6 +690,7 @@ bool read_config(FILE *file, struct sway_config *config,
 	bool success = true;
 	int line_number = 0;
 	char *line = NULL;
+	char *hash;
 	size_t line_size = 0;
 	ssize_t nread;
 	list_t *stack = create_list();
@@ -725,6 +726,9 @@ bool read_config(FILE *file, struct sway_config *config,
 				line_number += brace_detected;
 				sway_log(SWAY_DEBUG, "Detected open brace on line %d", line_number);
 			}
+		}
+		if(hash = strrchr(line, '#')) {
+			*hash = '\0';
 		}
 		char *block = stack->length ? stack->items[0] : NULL;
 		char *expanded = expand_line(block, line, brace_detected > 0);
